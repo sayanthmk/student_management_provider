@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:hive/hive.dart';
-import '../model/name_model.dart';
+import 'package:prov_setup/model/name_model.dart';
 
 class NameProvider with ChangeNotifier {
   final Box<Name> _nameBox;
@@ -45,9 +45,7 @@ class NameProvider with ChangeNotifier {
       return names;
     } else {
       return names.where((name) {
-        return name.name.toLowerCase().contains(query.toLowerCase()) ||
-            name.place.toLowerCase().contains(query.toLowerCase()) ||
-            name.phoneNumber.toLowerCase().contains(query.toLowerCase());
+        return name.name.toLowerCase().contains(query.toLowerCase());
       }).toList();
     }
   }
@@ -65,3 +63,6 @@ class NameProvider with ChangeNotifier {
     notifyListeners();
   }
 }
+//  ||
+        //     name.place.toLowerCase().contains(query.toLowerCase()) ||
+        //     name.phoneNumber.toLowerCase().contains(query.toLowerCase());

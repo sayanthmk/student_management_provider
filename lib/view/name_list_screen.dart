@@ -15,7 +15,7 @@ class NameListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.indigoAccent,
+        backgroundColor: const Color.fromARGB(255, 63, 46, 94),
         title: const Center(
             child: Text(
           'STUDENTS LIST',
@@ -30,13 +30,18 @@ class NameListScreen extends StatelessWidget {
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search',
+                hintStyle: const TextStyle(color: Colors.grey),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Colors.white,
-                prefixIcon: const Icon(Icons.search),
+                focusColor: Colors.white,
+                fillColor: const Color.fromARGB(24, 0, 0, 0),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
               ),
               onChanged: (value) {
                 (context as Element).markNeedsBuild();
@@ -52,103 +57,121 @@ class NameListScreen extends StatelessWidget {
             itemCount: names.length,
             itemBuilder: (context, index) {
               final nameEntry = names[index];
-              return Card(
-                color: const Color.fromARGB(255, 220, 103, 95),
-                child: ListTile(
-                  leading: nameEntry.imageUrl.isNotEmpty
-                      ? Image.file(File(nameEntry.imageUrl),
-                          width: 50, height: 50, fit: BoxFit.cover)
-                      : null,
-                  title: Text(nameEntry.name),
-                  subtitle: Text(nameEntry.place),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ProfileScreen(nameEntry: nameEntry),
-                      ),
-                    );
-                  },
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditScreen(
-                                nameEntry: nameEntry,
-                                index: index,
-                              ),
+              return Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Card(
+                  color: const Color.fromARGB(255, 108, 82, 146),
+                  child: ListTile(
+                    leading: nameEntry.imageUrl.isNotEmpty
+                        ? CircleAvatar(
+                            radius: 30,
+                            child: ClipOval(
+                              child: Image.file(File(nameEntry.imageUrl),
+                                  width: 60, height: 60, fit: BoxFit.cover),
                             ),
-                          );
-                        },
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                backgroundColor: Colors.white,
-                                title: const Text(
-                                  "Delete",
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                  ),
+                          )
+                        : null,
+                    title: Text(
+                      nameEntry.name,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    subtitle: Text(
+                      nameEntry.place,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ProfileScreen(nameEntry: nameEntry),
+                        ),
+                      );
+                    },
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditScreen(
+                                  nameEntry: nameEntry,
+                                  index: index,
                                 ),
-                                content: const SingleChildScrollView(
-                                  child: ListBody(
-                                    children: [
-                                      Text("Are you sure you want to delete "),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      // const Text("This action cannot be undone."),
-                                    ],
-                                  ),
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text(
-                                      "Cancel",
-                                      style: TextStyle(
-                                        color: Colors.blueGrey,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                              ),
+                            );
+                          },
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: Colors.white,
+                                  title: const Text(
+                                    "Delete",
+                                    style: TextStyle(
+                                      color: Colors.black,
                                     ),
                                   ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Provider.of<NameProvider>(context,
-                                              listen: false)
-                                          .deleteName(index);
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text(
-                                      "DELETE",
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  content: const SingleChildScrollView(
+                                    child: ListBody(
+                                      children: [
+                                        Text(
+                                            "Are you sure you want to delete "),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        icon: const Icon(Icons.delete),
-                      ),
-                    ],
-
-                    /////////////////////////
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text(
+                                        "Cancel",
+                                        style: TextStyle(
+                                          color: Colors.blueGrey,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Provider.of<NameProvider>(context,
+                                                listen: false)
+                                            .deleteName(index);
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text(
+                                        "DELETE",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.delete),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
@@ -168,10 +191,3 @@ class NameListScreen extends StatelessWidget {
     );
   }
 }
-    // IconButton(
-                    //   icon: const Icon(Icons.delete),
-                    //   onPressed: () {
-                    //     Provider.of<NameProvider>(context, listen: false)
-                    //         .deleteName(index);
-                    //   },
-                    // ),

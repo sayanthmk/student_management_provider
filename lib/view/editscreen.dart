@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:prov_setup/controller/provider_page.dart';
 import 'package:prov_setup/model/name_model.dart';
-import 'package:prov_setup/widgets/addbutton.dart';
 import 'package:prov_setup/widgets/customtextfield.dart';
-import 'package:prov_setup/widgets/imagepickwidget.dart';
 import 'package:provider/provider.dart';
 
 class EditScreen extends StatelessWidget {
@@ -58,7 +56,6 @@ class EditScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                //////////////
                 Center(
                   child: Stack(
                     alignment: Alignment.bottomRight,
@@ -67,6 +64,7 @@ class EditScreen extends StatelessWidget {
                         radius: 60,
                         backgroundColor: Colors.blue,
                         child: ClipOval(
+                          // ignore: unnecessary_null_comparison
                           child: selectedImagePath != null
                               ? Image.file(
                                   File(selectedImagePath),
@@ -112,26 +110,15 @@ class EditScreen extends StatelessWidget {
                             ),
                           );
                         },
-                        child: const CircleAvatar(
+                        child: CircleAvatar(
                           radius: 20,
-                          backgroundColor: Colors.red,
-                          child: Icon(Icons.add, color: Colors.white),
+                          backgroundColor: Colors.purpleAccent[200],
+                          child: const Icon(Icons.add, color: Colors.white),
                         ),
                       ),
                     ],
                   ),
                 ),
-                // CustomProfileAvatar(
-                //   backgroundColor: Colors.purple[300]!,
-                //   imagePath: nameProvider.selectedImagePath,
-                //   onGalleryTap: () {
-                //     nameProvider.pickImage(ImageSource.gallery);
-                //   },
-                //   onCameraTap: () {
-                //     nameProvider.pickImage(ImageSource.camera);
-                //   },
-                //   cirlebackgroundColor: Colors.pink,
-                // ),
                 const SizedBox(
                   height: 50,
                 ),
@@ -162,39 +149,61 @@ class EditScreen extends StatelessWidget {
                   labelText: 'Enter Place',
                   prefixIcon: const Icon(Icons.place),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 20),
                 Consumer<NameProvider>(
                   builder: (context, nameProvider, _) {
-                    return CustomButton(
+                    return InkWell(
                       onTap: () {
-                        if (formKey.currentState!.validate()) {
-                          final name = nameController.text;
-                          final age = int.tryParse(ageController.text) ?? 0;
-                          final place = placeController.text;
-                          final phoneNumber = phoneController.text;
+                        final name = nameController.text;
+                        final age = int.tryParse(ageController.text) ?? 0;
+                        final place = placeController.text;
+                        final phoneNumber = phoneController.text;
 
-                          if (name.isNotEmpty &&
-                              place.isNotEmpty &&
-                              phoneNumber.isNotEmpty &&
-                              nameProvider.selectedImagePath != null) {
-                            nameProvider.updateStudent(
-                              index,
-                              name,
-                              age,
-                              place,
-                              phoneNumber,
-                              selectedImagePath,
-                            );
-                            Navigator.pop(context);
-                          }
+                        if (name.isNotEmpty &&
+                            place.isNotEmpty &&
+                            phoneNumber.isNotEmpty) {
+                          nameProvider.updateStudent(
+                            index,
+                            name,
+                            age,
+                            place,
+                            phoneNumber,
+                            selectedImagePath,
+                          );
+                          Navigator.pop(context);
                         }
                       },
-                      gradientColors: [
-                        Colors.purple[500]!,
-                        Colors.purple[300]!
-                      ],
-                      boxShadowColor: Colors.purple,
-                      buttonText: "UPDATE STUDENT",
+                      child: Container(
+                        height: 60,
+                        width: 250,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Colors.purple[500]!, Colors.purple[300]!],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.purple,
+                              spreadRadius: 2,
+                              blurRadius: 3,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(15.0)),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "EDIT",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
                     );
                   },
                 ),
@@ -206,158 +215,3 @@ class EditScreen extends StatelessWidget {
     );
   }
 }
-// selectedImagePath != null
-            //     ? Image.file(
-            //         File(selectedImagePath!),
-            //         width: 200,
-            //         height: 200,
-            //       )
-            //     : const Text('Please select an image'),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     MaterialButton(
-            //         color: Colors.blue,
-            //         child: const Text(
-            //           'Pick from Gallery',
-            //           style: TextStyle(
-            //             color: Colors.white,
-            //             fontWeight: FontWeight.bold,
-            //           ),
-            //         ),
-            //         onPressed: () =>
-            //             nameProvider.pickImage(ImageSource.gallery)),
-            //     MaterialButton(
-            //         color: Colors.red,
-            //         child: const Text(
-            //           'Pick from Camera',
-            //           style: TextStyle(
-            //             color: Colors.white,
-            //             fontWeight: FontWeight.bold,
-            //           ),
-            //         ),
-            //         onPressed: () =>
-            //             nameProvider.pickImage(ImageSource.camera)),
-            //   ],
-            // ),
-            //////////////////////////
-            ///   // Center(
-            //   child: Stack(
-            //     alignment: Alignment.bottomRight,
-            //     children: [
-            //       CircleAvatar(
-            //         radius: 60,
-            //         backgroundColor: Colors.blue,
-            //         child: ClipOval(
-            //           child: nameProvider.selectedImagePath != null
-            //               ? Image.file(
-            //                   File(nameProvider.selectedImagePath!),
-            //                   fit: BoxFit.cover,
-            //                   width: 120,
-            //                   height: 120,
-            //                 )
-            //               : const Icon(
-            //                   Icons.person,
-            //                   size: 60,
-            //                   color: Colors.white,
-            //                 ),
-            //         ),
-            //       ),
-            //       InkWell(
-            //         onTap: () {
-            //           showDialog(
-            //             context: context,
-            //             builder: (context) => AlertDialog(
-            //               title: const Text("Choose image"),
-            //               actions: [
-            //                 InkWell(
-            //                   onTap: () {
-            //                     nameProvider.pickImage(ImageSource.gallery);
-            //                     Navigator.of(context).pop();
-            //                   },
-            //                   child: const Padding(
-            //                     padding: EdgeInsets.all(8.0),
-            //                     child: Text("Gallery"),
-            //                   ),
-            //                 ),
-            //                 InkWell(
-            //                   onTap: () {
-            //                     nameProvider.pickImage(ImageSource.camera);
-            //                     Navigator.of(context).pop();
-            //                   },
-            //                   child: const Padding(
-            //                     padding: EdgeInsets.all(8.0),
-            //                     child: Text("Camera"),
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           );
-            //         },
-            //         child: const CircleAvatar(
-            //           radius: 20,
-            //           backgroundColor: Colors.red,
-            //           child: Icon(Icons.add, color: Colors.white),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-                // TextField(
-            //   controller: nameController,
-            //   decoration: const InputDecoration(
-            //     border: OutlineInputBorder(),
-            //     labelText: 'Enter name',
-            //   ),
-            // ),
-            // const SizedBox(height: 8),
-            // TextField(
-            //   controller: ageController,
-            //   decoration: const InputDecoration(
-            //     border: OutlineInputBorder(),
-            //     labelText: 'Enter age',
-            //   ),
-            //   keyboardType: TextInputType.number,
-            // ),
-            // const SizedBox(height: 8),
-            // TextField(
-            //   controller: placeController,
-            //   decoration: const InputDecoration(
-            //     border: OutlineInputBorder(),
-            //     labelText: 'Enter place',
-            //   ),
-            // ),
-            // const SizedBox(height: 8),
-            // TextField(
-            //   controller: phoneController,
-            //   decoration: const InputDecoration(
-            //     border: OutlineInputBorder(),
-            //     labelText: 'Enter phone number',
-            //   ),
-            //   keyboardType: TextInputType.phone,
-            // ),
-                //////////////
-                    // return ElevatedButton(
-                    //   onPressed: () {
-                    //     final name = nameController.text;
-                    //     final age = int.tryParse(ageController.text) ?? 0;
-                    //     final place = placeController.text;
-                    //     final phoneNumber = phoneController.text;
-
-                    //     if (name.isNotEmpty &&
-                    //         place.isNotEmpty &&
-                    //         phoneNumber.isNotEmpty &&
-                    //         selectedImagePath != null) {
-                    //       nameProvider.updateStudent(
-                    //         index,
-                    //         name,
-                    //         age,
-                    //         place,
-                    //         phoneNumber,
-                    //         selectedImagePath,
-                    //       );
-                    //       Navigator.pop(context);
-                    //     }
-                    //   },
-                    //   child: const Text('Update Entry'),
-                    // );

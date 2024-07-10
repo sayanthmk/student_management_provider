@@ -33,7 +33,7 @@ class CustomTextField extends StatelessWidget {
         keyboardType: keyboard,
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Name is empty';
+            return '* Required Field';
           } else {
             return null;
           }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '../model/name_model.dart';
+import 'package:prov_setup/model/name_model.dart';
+import 'package:prov_setup/widgets/customtextbox.dart';
 
 class ProfileScreen extends StatelessWidget {
   final Name nameEntry;
@@ -11,30 +12,56 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(nameEntry.name),
+        centerTitle: true,
+        iconTheme: const IconThemeData(color: Colors.black),
+        title: const Text(
+          "Profile",
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 25),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            if (nameEntry.imageUrl.isNotEmpty)
-              Center(
-                child: Image.file(File(nameEntry.imageUrl),
-                    width: 150, height: 150, fit: BoxFit.cover),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 20,
               ),
-            const SizedBox(height: 16),
-            Text('Name: ${nameEntry.name}',
-                style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 8),
-            Text('Age: ${nameEntry.age}', style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 8),
-            Text('Place: ${nameEntry.place}',
-                style: const TextStyle(fontSize: 18)),
-            const SizedBox(height: 8),
-            Text('Phone: ${nameEntry.phoneNumber}',
-                style: const TextStyle(fontSize: 18)),
-          ],
+              if (nameEntry.imageUrl.isNotEmpty)
+                Center(
+                    child: CircleAvatar(
+                  radius: 50,
+                  child: ClipOval(
+                    child: Image.file(
+                      File(nameEntry.imageUrl),
+                      fit: BoxFit.cover,
+                      width: 100,
+                      height: 100,
+                    ),
+                  ),
+                )),
+              const SizedBox(height: 16),
+              Center(
+                child: Text(nameEntry.name,
+                    style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black)),
+              ),
+              const SizedBox(height: 10),
+              CustomTextBox(nameEntry: nameEntry.place, fieldicon: Icons.place),
+              const SizedBox(height: 20),
+              CustomTextBox(
+                  nameEntry: (nameEntry.age).toString(),
+                  fieldicon: Icons.calendar_today),
+              const SizedBox(height: 20),
+              CustomTextBox(
+                  nameEntry: nameEntry.phoneNumber, fieldicon: Icons.phone),
+              const SizedBox(height: 20),
+            ],
+          ),
         ),
       ),
     );
